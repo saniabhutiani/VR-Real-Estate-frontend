@@ -1,0 +1,1 @@
+export const BACKEND_URL = "https://real-backend-p7ph.onrender.com";

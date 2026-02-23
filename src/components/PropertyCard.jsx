@@ -1,22 +1,22 @@
 import { Link } from "react-router-dom";
-import { getImageUrl } from "../utils/image";
+import { BACKEND_URL } from "../config";
 
 const PropertyCard = ({ property }) => {
   if (!property) return null;
 
-  // Correct image field from MongoDB
+  // MongoDB fields
   const imgPath =
-    property.images?.[0] ||   // images array
-    property.vrImage;         // vrImage field
+    property.images?.[0] ||
+    property.vrImage;
 
   return (
     <div className="group rounded-2xl overflow-hidden bg-white shadow-lg">
-      
+
       {/* IMAGE */}
       <div className="relative h-52 overflow-hidden">
         {imgPath ? (
           <img
-            src={`http://localhost:3000${imgPath}`}
+            src={`${BACKEND_URL}${imgPath}`}
             className="w-full h-full object-cover"
             alt="property"
           />
@@ -44,6 +44,7 @@ const PropertyCard = ({ property }) => {
           </Link>
         </div>
       </div>
+
     </div>
   );
 };

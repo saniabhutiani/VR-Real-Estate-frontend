@@ -1,51 +1,52 @@
-import { useEffect, useState } from "react";
-import PropertyCard from "../components/PropertyCard";
+import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../config";
 
-const Properties = () => {
-  const [properties, setProperties] = useState([]);
+const PropertyCard = ({ property }) => {
+  if (!property) return null;
 
-  useEffect(() => {
-    fetch("/api/property")
-      .then((res) => res.json())
-      .then((data) => {
-        const safeProperties = Array.isArray(data?.properties)
-          ? data.properties.filter(Boolean) // 🔥 IMPORTANT
-          : [];
-        setProperties(safeProperties);
-      })
-      .catch(() => setProperties([]));
-  }, []);
+  // MongoDB fields
+  const imgPath =
+    property.images?.[0] ||
+    property.vrImage;
 
   return (
-    <div
-      className="
-        min-h-[calc(100vh-80px)] w-full
-        bg-[linear-gradient(180deg,#e1eaf6_0%,#d3def0_45%,#c8d6eb_100%)]
-        dark:bg-[linear-gradient(180deg,#0f172a_0%,#020617_100%)]
-      "
-    >
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-4xl font-bold mb-14 text-slate-800 dark:text-slate-100">
-          All Properties
-        </h2>
+    <div className="group rounded-2xl overflow-hidden bg-white shadow-lg">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {properties.map((property) => (
-            <PropertyCard
-              key={property?._id}
-              property={property}
-            />
-          ))}
-        </div>
-
-        {properties.length === 0 && (
-          <div className="text-center text-slate-500 dark:text-slate-400 mt-24">
-            No properties available at the moment.
+      {/* IMAGE */}
+      <div className="relative h-52 overflow-hidden">
+        {imgPath ? (
+          <img
+            src={`${BACKEND_URL}${imgPath}`}
+            className="w-full h-full object-cover"
+            alt="property"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            No Image
           </div>
         )}
       </div>
+
+      {/* CONTENT */}
+      <div className="p-5">
+        <h3 className="text-lg font-semibold">{property.title}</h3>
+
+        <p className="text-sm text-gray-500">{property.location}</p>
+
+        <div className="flex items-center justify-between mt-4">
+          <p className="text-green-600 font-bold">₹{property.price}</p>
+
+          <Link
+            to={`/properties/${property._id}`}
+            className="px-3 py-1.5 bg-blue-600 text-white rounded-lg"
+          >
+            View Details →
+          </Link>
+        </div>
+      </div>
+
     </div>
   );
 };
 
-export default Properties;
+export default PropertyCard;
