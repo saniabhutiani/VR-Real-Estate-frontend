@@ -1,52 +1,45 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import PropertyCard from "../components/PropertyCard";
 import { BACKEND_URL } from "../config";
 
-const PropertyCard = ({ property }) => {
-  if (!property) return null;
+const Properties = () => {
+const [properties, setProperties] = useState([]);
 
-  // MongoDB fields
-  const imgPath =
-    property.images?.[0] ||
-    property.vrImage;
+useEffect(() => {
+fetch(`${BACKEND_URL}/api/property`)
+.then((res) => res.json())
+.then((data) => {
+const safeProperties = Array.isArray(data?.properties)
+? data.properties.filter(Boolean)
+: [];
+setProperties(safeProperties);
+})
+.catch(() => setProperties([]));
+}, []);
 
-  return (
-    <div className="group rounded-2xl overflow-hidden bg-white shadow-lg">
+return ( <div className="min-h-[calc(100vh-80px)] w-full bg-gray-100"> <div className="max-w-7xl mx-auto px-6 py-16"> <h2 className="text-4xl font-bold mb-14 text-slate-800">
+All Properties </h2>
 
-      {/* IMAGE */}
-      <div className="relative h-52 overflow-hidden">
-        {imgPath ? (
-          <img
-            src={`${BACKEND_URL}${imgPath}`}
-            className="w-full h-full object-cover"
-            alt="property"
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            No Image
-          </div>
-        )}
-      </div>
-
-      {/* CONTENT */}
-      <div className="p-5">
-        <h3 className="text-lg font-semibold">{property.title}</h3>
-
-        <p className="text-sm text-gray-500">{property.location}</p>
-
-        <div className="flex items-center justify-between mt-4">
-          <p className="text-green-600 font-bold">₹{property.price}</p>
-
-          <Link
-            to={`/properties/${property._id}`}
-            className="px-3 py-1.5 bg-blue-600 text-white rounded-lg"
-          >
-            View Details →
-          </Link>
-        </div>
-      </div>
-
+```
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      {properties.map((property) => (
+        <PropertyCard
+          key={property?._id}
+          property={property}
+        />
+      ))}
     </div>
-  );
+
+    {properties.length === 0 && (
+      <div className="text-center text-slate-500 mt-24">
+        No properties available at the moment.
+      </div>
+    )}
+  </div>
+</div>
+
+
+);
 };
 
-export default PropertyCard;
+export default Properties;
