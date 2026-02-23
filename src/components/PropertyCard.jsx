@@ -16,7 +16,7 @@ const PropertyCard = ({ property }) => {
       <div className="relative h-52 overflow-hidden">
         {imgPath ? (
           <img
-            src={`${BACKEND_URL}${imgPath}`}
+         src={`https://real-backend-p7ph.onrender.com${imgPath}`}
             className="w-full h-full object-cover"
             alt="property"
           />
