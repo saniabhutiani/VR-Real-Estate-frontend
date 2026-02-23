@@ -1,9 +1,9 @@
-export const getImageUrl = (path) => {
-  if (!path) return "/no-image.png";
+export const getImageUrl = (imgPath) => {
+  if (!imgPath) return "";
 
-  // If already full URL (Cloudinary etc)
-  if (path.startsWith("http")) return path;
+  // Already full URL (Cloudinary etc)
+  if (imgPath.startsWith("http")) return imgPath;
 
-  // IMPORTANT — Backend live URL
-  return `https://vr-real-estate-backend.vercel.app/${path}`;
+  // LOCAL backend images
+  return `http://localhost:3000/uploads/properties/${imgPath}`;
 };
