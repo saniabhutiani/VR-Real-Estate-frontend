@@ -24,9 +24,9 @@ body.dark {
   top: 0;
   z-index: 100;
   padding: 16px 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 body.light .navbar {
@@ -61,7 +61,11 @@ body.dark .navbar {
   cursor: pointer;
   color: inherit;
 }
-
+.nav-menu{
+display:flex;
+align-items:center;
+gap:20px;
+}
 /* 
    HERO SECTION */
 .hero {
@@ -134,6 +138,10 @@ body.dark .navbar {
 .btn-primary:hover,
 .btn-outline:hover {
   opacity: 0.85;
+}
+.theme-icon{
+display:flex;
+align-items:center;
 }
 
 /* =======================
@@ -422,8 +430,6 @@ body.dark .card {
     );
   padding: 80px 24px;
 }
-
-
 .price {
   font-size: 18px;
   font-weight: 700;
@@ -441,4 +447,24 @@ body.dark .card {
 
 .details-btn:hover {
   background: linear-gradient(90deg, #1e40af, #3730a3);
+}
+@media (max-width:768px){
+
+.nav-menu{
+gap:10px;
+font-size:13px;
+}
+
+.nav-menu li{
+white-space:nowrap;
+}
+
+}
+@media (max-width:768px){
+
+.admin-links{
+display:flex;
+gap:8px;
+}
+
 }
