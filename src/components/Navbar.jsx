@@ -9,6 +9,7 @@ const Navbar = () => {
   const isAdmin = localStorage.getItem("admin") === "true";
 
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // mobile menu
 
   /* -------- USER LOGOUT -------- */
   const logout = () => {
@@ -30,16 +31,34 @@ const Navbar = () => {
       bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900
       shadow-lg"
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
         {/* LOGO */}
         <Link to="/" className="text-white text-2xl font-bold">
           VR Real Estate
         </Link>
 
-        {/* NAV LINKS */}
-        <nav className="flex items-center gap-8 text-slate-200 relative">
+        {/* MOBILE MENU BUTTON */}
+        <button
+          className="md:hidden text-white text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
 
+        {/* NAV LINKS */}
+        <nav
+          className={`
+          absolute md:static top-full left-0 w-full md:w-auto
+          bg-slate-900 md:bg-transparent
+          flex flex-col md:flex-row
+          items-start md:items-center
+          gap-6 md:gap-8
+          p-6 md:p-0
+          text-slate-200
+          ${menuOpen ? "block" : "hidden md:flex"}
+        `}
+        >
           <NavLink to="/" className={navClass}>Home</NavLink>
 
           <NavLink to="/properties" className={navClass}>
@@ -54,14 +73,14 @@ const Navbar = () => {
             Contact Us
           </NavLink>
 
-          {/* ⭐ ADMIN LOGIN BUTTON (always visible if not logged in) */}
+          {/* ADMIN LOGIN BUTTON */}
           {!isAdmin && (
             <NavLink to="/admin-login" className={navClass}>
               Admin
             </NavLink>
           )}
 
-          {/* ---------- USER AUTH ---------- */}
+          {/* USER AUTH */}
           {!currentUser && !isAdmin && (
             <>
               <NavLink to="/login" className={navClass}>Login</NavLink>
@@ -69,7 +88,7 @@ const Navbar = () => {
             </>
           )}
 
-          {/* ---------- USER DROPDOWN ---------- */}
+          {/* USER DROPDOWN */}
           {currentUser && (
             <div className="relative">
               <button
@@ -107,7 +126,7 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* ---------- ADMIN DROPDOWN ---------- */}
+          {/* ADMIN DROPDOWN */}
           {isAdmin && (
             <div className="relative">
               <button
